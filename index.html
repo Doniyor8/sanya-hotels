@@ -68,6 +68,16 @@ tr:last-child td { border-bottom: 0; }
 .photos figure { grid-column: 1 / -1; margin: 0; position: relative; }
 .photos figure img { aspect-ratio: 16 / 9; }
 .photos figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 12px 8px; font-size: 13px; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.7)); }
+.gallery { display: grid; gap: 6px; }
+.stage { position: relative; background: #000; cursor: pointer; }
+.stage img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.count { position: absolute; right: 10px; bottom: 10px; font-size: 12px; font-weight: 600; color: #fff; background: rgba(0,0,0,.55); padding: 3px 9px; border-radius: 999px; }
+.strip { display: flex; gap: 6px; overflow-x: auto; padding: 0 16px 2px; scroll-snap-type: x proximity; }
+.thumb { flex: none; width: 76px; height: 57px; padding: 0; border: 2px solid transparent; border-radius: 6px; overflow: hidden; background: var(--line); cursor: pointer; scroll-snap-align: start; }
+.thumb img { width: 100%; height: 100%; object-fit: cover; }
+.thumb.on { border-color: var(--accent); }
+.roomcap { padding: 0 16px; font-size: 13px; color: var(--muted); }
+.linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
 .body { padding: 14px 16px 16px; display: grid; gap: 12px; }
 .ptable { border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
 .ptable td:first-child small { display: block; color: var(--muted); font-size: 11px; }
@@ -122,7 +132,7 @@ const T = {
     opened: y => "Открыт в " + y, renov: y => "Обновлён в " + y,
     stars: n => n + " бриллианта", reviews: "отзывов", perNight: "за ночь · вид на море",
     pTitle: "Цена за ночь", noBf: "без завтрака", bf: "с завтраком на 2", anyRoom: "Самый дешёвый номер", seaRoom: "С видом на море",
-    roomPhoto: "Номер", nav: "Карта Amap", trip: "Trip.com",
+    roomPhoto: "Номер", showRoom: "показать фото номера", nav: "Карта Amap", trip: "Trip.com",
     foot1: "Источник: Trip.com, цены проверены 6 ноября 2026. Цены меняются, смотрите страницу бронирования.",
     foot2: "Год открытия или ремонта взят со страницы отеля на Trip.com.", oldLink: "Прошлый список (14 отелей) →",
     bays: { sanyabay: "Бухта Санья", dadonghai: "Дадунхай", haitang: "Хайтанвань", wuzhizhou: "Остров Учжичжоу", yazhou: "Бухта Ячжоу" } },
@@ -133,7 +143,7 @@ const T = {
     opened: y => "Opened " + y, renov: y => "Renovated " + y,
     stars: n => n + " diamonds", reviews: "reviews", perNight: "per night · sea view",
     pTitle: "Price per night", noBf: "no breakfast", bf: "breakfast for 2", anyRoom: "Cheapest room", seaRoom: "Sea-view room",
-    roomPhoto: "Room", nav: "Amap map", trip: "Trip.com",
+    roomPhoto: "Room", showRoom: "show the room photo", nav: "Amap map", trip: "Trip.com",
     foot1: "Source: Trip.com, prices checked 6 Nov 2026. Prices change, check the booking page.",
     foot2: "Opening or renovation year from each hotel's Trip.com page.", oldLink: "Previous list (14 hotels) →",
     bays: { sanyabay: "Sanya Bay", dadonghai: "Dadonghai", haitang: "Haitang Bay", wuzhizhou: "Wuzhizhou Island", yazhou: "Yazhou Bay" } },
@@ -144,7 +154,7 @@ const T = {
     opened: y => y + " 年开业", renov: y => y + " 年翻新",
     stars: n => n + " 钻", reviews: "条点评", perNight: "每晚 · 海景房",
     pTitle: "每晚价格", noBf: "不含早", bf: "含双早", anyRoom: "最便宜的房型", seaRoom: "海景房",
-    roomPhoto: "房间", nav: "高德地图", trip: "Trip.com",
+    roomPhoto: "房间", showRoom: "查看房间照片", nav: "高德地图", trip: "Trip.com",
     foot1: "数据来源：Trip.com，价格于 2026 年 11 月 6 日核对。价格随时变化，以预订页面为准。",
     foot2: "开业或翻新年份取自各酒店的 Trip.com 页面。", oldLink: "之前的名单（14 家酒店）→",
     bays: { sanyabay: "三亚湾", dadonghai: "大东海", haitang: "海棠湾", wuzhizhou: "蜈支洲岛", yazhou: "崖州湾" } }
@@ -232,6 +242,9 @@ const H = [
 H.sort((a, b) => b.dia - a.dia || a.p[2] - b.p[2]);
 H.forEach((h, i) => h.n = i + 1);
 
+/* photo list per hotel: main, second, room, then the gallery g01…gNN */
+const pics = h => [`p/${h.id}-1.jpg`, `p/${h.id}-2.jpg`, `p/${h.id}-room.jpg`]
+  .concat(Array.from({ length: h.g ?? 12 }, (_, i) => `p/${h.id}-g${String(i + 1).padStart(2, "0")}.jpg`));
 const amap = h => "https://uri.amap.com/marker?position=" + h.lng + "," + h.lat + "&name=" + encodeURIComponent(h.name.zh) + "&coordinate=gaode&callnative=1";
 const nm = (h, L) => L === "zh" ? h.name.zh : h.name.en;
 const alt = (h, L) => L === "zh" ? h.name.en : h.name.zh;
@@ -264,10 +277,10 @@ function render(L) {
         <span class="chip plain">${t.stars(h.dia)}</span>
         <span class="chip plain">${h.rating}/10 · ${h.reviews.toLocaleString(t.locale)} ${t.reviews}</span>
       </div>
-      <div class="photos">
-        <img src="p/${h.id}-1.jpg" alt="${esc(nm(h, L))}" loading="lazy">
-        <img src="p/${h.id}-2.jpg" alt="${esc(nm(h, L))}" loading="lazy">
-        <figure><img src="p/${h.id}-room.jpg" alt="${esc(h.room[L])}" loading="lazy"><figcaption>${t.roomPhoto}: ${esc(h.room[L])}</figcaption></figure>
+      <div class="gallery" data-n="${h.n}">
+        <div class="stage"><img src="p/${h.id}-1.jpg" alt="${esc(nm(h, L))}" loading="lazy"><span class="count">1 / ${pics(h).length}</span></div>
+        <div class="strip" role="list">${pics(h).map((f, i) => `<button type="button" role="listitem" class="thumb${i === 0 ? " on" : ""}" data-src="${f}" data-i="${i}" aria-label="${i + 1}"><img src="${f}" alt="" loading="lazy"></button>`).join("")}</div>
+        <div class="roomcap">${t.roomPhoto}: ${esc(h.room[L])} — <button type="button" class="linkish" data-room="p/${h.id}-room.jpg">${t.showRoom}</button></div>
       </div>
       <div class="body">
         <div class="ptable"><table>
@@ -286,6 +299,26 @@ function render(L) {
       </div>
     </article>`).join("");
 }
+
+/* gallery: tap a thumbnail (or the room link) to show it large */
+function show(gal, src) {
+  const all = [...gal.querySelectorAll(".thumb")];
+  const i = all.findIndex(b => b.dataset.src === src);
+  gal.querySelector(".stage img").src = src;
+  gal.querySelector(".count").textContent = (i + 1) + " / " + all.length;
+  all.forEach(b => b.classList.toggle("on", b.dataset.src === src));
+  if (all[i]) all[i].scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+}
+document.getElementById("cards").addEventListener("click", e => {
+  const th = e.target.closest(".thumb"), rm = e.target.closest("[data-room]"), st = e.target.closest(".stage");
+  if (th) show(th.closest(".gallery"), th.dataset.src);
+  else if (rm) show(rm.closest(".gallery"), rm.dataset.room);
+  else if (st) { /* tap the big photo: next one */
+    const gal = st.closest(".gallery"), all = [...gal.querySelectorAll(".thumb")];
+    const cur = all.findIndex(b => b.classList.contains("on"));
+    show(gal, all[(cur + 1) % all.length].dataset.src);
+  }
+});
 
 let lang = "ru";
 try { const s = localStorage.getItem("sanya-new-lang"); if (s && T[s]) lang = s; } catch (e) {}
