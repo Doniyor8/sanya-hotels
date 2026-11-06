@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Bekzodaka и его друзья 👬👭👫">
+<meta property="og:description" content="14 отелей с видом на море в Санье: цены с завтраком и без, фото номеров, карта · RU / EN / 中文">
+<meta property="og:image" content="https://doniyor8.github.io/sanya-hotels/old/img/1-1.jpg">
+<meta property="og:url" content="https://doniyor8.github.io/sanya-hotels/old/">
+<meta property="og:type" content="website">
+<title>三亚海景情报</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=ZCOOL+QingKe+HuangYou&family=Noto+Sans:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap">
+<style>
+/* Layout: one night-sea terminal column; language bar → boot log → loot chart → radar map → hotel files */
+:root {
+  --bg: #061219;
+  --panel: #0b212c;
+  --line: #17414f;
+  --fg: #d9f2ee;
+  --muted: #84aaa7;
+  --sea: #3fe0c8;
+  --sun: #ff8a5c;
+  --sand: #f3d49c;
+  --dh: #c9a7ff;
+  --sb: #7ab8ff;
+  --ok: #7ee787;
+  --f-display: "Russo One", "ZCOOL QingKe HuangYou", "Noto Sans SC", sans-serif;
+  --f-body: "Noto Sans", "Noto Sans SC", "PingFang SC", "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--fg); }
+body { font-family: var(--f-body); font-size: 15px; line-height: 1.65; }
+.wrap { max-width: 920px; margin: 0 auto; padding-block: 16px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 40px; }
+a { color: var(--sea); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--sand); outline-offset: 2px; }
+
+.langbar { display: flex; justify-content: flex-end; gap: 6px; font-family: var(--f-mono); }
+.langbar button { background: var(--panel); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 8px 14px; font: inherit; font-size: 13px; cursor: pointer; min-width: 52px; }
+.langbar button[aria-pressed="true"] { color: var(--bg); background: var(--sea); border-color: var(--sea); font-weight: 700; }
+
+.term { background: #030b10; border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; font-family: var(--f-mono); font-size: 13px; line-height: 1.7; overflow-x: auto; }
+.term p { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.term .prompt { color: var(--sea); }
+.term .ok { color: var(--ok); }
+.term .warn { color: var(--sun); }
+.term .dim { color: var(--muted); }
+.cursor { display: inline-block; width: 8px; height: 1em; background: var(--sea); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(30px, 7vw, 58px); line-height: 1.15; margin: 0; letter-spacing: .5px; text-wrap: balance; }
+.hero h1 .who { color: var(--sea); text-shadow: 0 0 18px rgba(63,224,200,.35); }
+.hero .tag { font-family: var(--f-display); font-size: clamp(18px, 3.6vw, 26px); color: var(--sand); margin: 8px 0 0; }
+.hero .sub { color: var(--muted); margin: 10px 0 0; max-width: 62ch; }
+
+h2 { font-family: var(--f-display); font-weight: 400; font-size: 26px; margin: 0 0 4px; text-wrap: balance; }
+.kicker { font-family: var(--f-mono); font-size: 12px; letter-spacing: .12em; color: var(--sun); text-transform: uppercase; }
+.note { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+
+.exploit { border: 1px dashed var(--sun); border-radius: 6px; padding: 16px; display: grid; gap: 10px; background: rgba(255,138,92,.06); }
+.steps { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-family: var(--f-mono); }
+.steps .st { padding: 6px 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--panel); }
+.steps .st s { color: var(--muted); }
+.steps .st.win { border-color: var(--ok); color: var(--ok); }
+.steps .arr { color: var(--muted); }
+
+.bars { display: grid; gap: 8px; margin-top: 14px; font-variant-numeric: tabular-nums; }
+.bar { display: grid; grid-template-columns: minmax(0, 12em) 1fr 5.5em; gap: 10px; align-items: center; font-size: 13px; }
+.bar .nm { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bar .track { position: relative; height: 14px; background: var(--panel); border-radius: 2px; }
+.bar .fill { position: absolute; inset: 0 auto 0 0; border-radius: 2px; opacity: .85; }
+.bar .mark { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--fg); opacity: .5; }
+.bar .v { font-family: var(--f-mono); text-align: right; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-top: 10px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+
+.mapbox { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 10px; overflow-x: auto; }
+.mapbox svg { display: block; width: 100%; height: auto; min-width: 320px; max-width: 100%; }
+.sweep { transform-origin: 520px 120px; animation: sweep 6s linear infinite; }
+@keyframes sweep { to { transform: rotate(360deg); } }
+
+.dossiers { display: grid; gap: 28px; }
+.card { border: 1px solid var(--line); border-radius: 8px; background: var(--panel); overflow: hidden; }
+.card.bench { border-color: var(--sun); }
+.card .head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+.card .head > div:first-child { min-width: 0; }
+.card .id { font-family: var(--f-mono); font-size: 12px; color: var(--sea); letter-spacing: .1em; }
+.card.bench .id { color: var(--sun); }
+.card h3 { font-family: var(--f-display); font-weight: 400; font-size: 23px; margin: 2px 0 0; line-height: 1.25; }
+.card .alt { color: var(--muted); font-size: 13px; }
+.price { text-align: right; font-family: var(--f-mono); }
+.price .big { font-size: 28px; font-weight: 700; color: var(--sand); line-height: 1.1; }
+.price .per { font-size: 12px; color: var(--muted); }
+.photos { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #000; }
+.photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; max-width: 100%; }
+.photos figure { grid-column: 1 / -1; margin: 0; position: relative; }
+.photos figure img { aspect-ratio: 16 / 9; }
+.photos figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 18px 12px 8px; font-size: 13px; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,.75)); }
+.body { padding: 14px 16px 16px; display: grid; gap: 12px; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--f-mono); font-size: 12px; }
+.chip { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+.chip.hot { border-color: var(--ok); color: var(--ok); }
+.ptable-wrap { overflow-x: auto; }
+.ptable { width: 100%; border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; }
+.ptable th, .ptable td { border: 1px solid var(--line); padding: 7px 10px; text-align: right; }
+.ptable th { font-weight: 500; color: var(--muted); font-size: 12px; }
+.ptable th:first-child, .ptable td:first-child { text-align: left; }
+.ptable td { font-family: var(--f-mono); }
+.ptable tr.sea td { color: var(--sand); }
+.ptable td:first-child { font-family: var(--f-body); color: var(--fg); }
+.ptable .rn { display: block; color: var(--muted); font-size: 11px; }
+.card ul { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.quip { font-family: var(--f-mono); font-size: 13px; color: var(--sea); border-left: 2px solid var(--sea); padding-left: 10px; }
+.card.bench .quip { color: var(--sun); border-color: var(--sun); }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-block; text-decoration: none; font-family: var(--f-mono); font-size: 13px; padding: 9px 14px; border-radius: 4px; border: 1px solid var(--sea); color: var(--sea); }
+.btn.alt2 { border-color: var(--line); color: var(--fg); }
+.btn:hover { background: rgba(63,224,200,.1); }
+
+footer { font-family: var(--f-mono); font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+footer b { color: var(--sea); font-weight: 400; }
+
+@media (max-width: 560px) {
+  .bar { grid-template-columns: minmax(0, 8em) 1fr 4.8em; }
+  .price { text-align: left; }
+  .card h3 { font-size: 20px; }
+}
+@media (prefers-reduced-motion: reduce) { .cursor, .sweep { animation: none; } }
+</style>
+
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important} :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
+</head>
+<body>
+<div class="wrap">
+  <nav class="langbar" aria-label="Language">
+    <button type="button" id="lang-ru" data-lang="ru">RU</button>
+    <button type="button" id="lang-en" data-lang="en">EN</button>
+    <button type="button" id="lang-zh" data-lang="zh">中文</button>
+  </nav>
+
+  <section class="term" id="term" aria-label="log"></section>
+
+  <header class="hero">
+    <div class="kicker" data-t="kicker"></div>
+    <h1><span class="who" data-t="who"></span> 👬👭👫</h1>
+    <p class="tag" data-t="tag"></p>
+    <p class="sub" data-t="sub"></p>
+  </header>
+
+  <section class="exploit" aria-labelledby="ex-h">
+    <div class="kicker" data-t="exKicker"></div>
+    <h2 id="ex-h" data-t="exTitle"></h2>
+    <div class="steps">
+      <span class="st">Qunar <s>¥970</s></span><span class="arr">→</span>
+      <span class="st"><span data-t="manager"></span> <s>¥850</s></span><span class="arr">→</span>
+      <span class="st win">Trip.com ¥765<span data-t="perNight"></span></span>
+    </div>
+    <p class="note" data-t="exNote"></p>
+  </section>
+
+  <section aria-labelledby="loot-h">
+    <div class="kicker" data-t="lootKicker"></div>
+    <h2 id="loot-h" data-t="lootTitle"></h2>
+    <div class="bars" id="bars"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section aria-labelledby="map-h">
+    <div class="kicker" data-t="mapKicker"></div>
+    <h2 id="map-h" data-t="mapTitle"></h2>
+    <div class="mapbox"><svg id="map" viewBox="0 0 640 400" role="img"></svg></div>
+    <p class="note" data-t="mapNote"></p>
+  </section>
+
+  <section aria-labelledby="dos-h">
+    <div class="kicker" data-t="dosKicker"></div>
+    <h2 id="dos-h" data-t="dosTitle"></h2>
+    <div class="dossiers" id="dossiers"></div>
+  </section>
+
+  <footer>
+    <span data-t="foot1"></span>
+    <span data-t="foot2"></span>
+    <span data-t="foot3"></span>
+  </footer>
+</div>
+
+<script>
+const T = {
+  ru: {
+    who: "Bekzodaka и его друзья", tag: "Разведка морских отелей Саньи",
+    kicker: "Секретное досье · Санья · ноябрь 2026",
+    sub: "Хакерский центр Doni просканировал 14 курортов с видом на море в бухтах Хайтанвань, Ялунвань, Дадунхай и Санья: цены с завтраком и без, фото номеров, карта и рейтинги. Хорошего отдыха!",
+    term: ["[..] обход файрвола ресепшена ...... готово", "[OK] подключено к базе отелей Саньи: 14 отелей · 42 фото · 56 цен", "[!!] найдена дыра в цене: Mangrove 180° с видом на море — Qunar ¥970 → менеджер ¥850 → Trip.com ¥765/ночь", "[OK] ACCESS GRANTED · добро пожаловать, Bekzodaka и друзья"],
+    exKicker: "Отчёт об уязвимости #001", exTitle: "Mangrove 180°: онлайн дешевле", manager: "Менеджер", perNight: "/ночь",
+    exNote: "Экономия ¥85 за ночь, ¥255 за 3 ночи. Цена Trip.com с налогами, без питания, с предоплатой, 7–10 ноября (3 ночи).",
+    lootKicker: "Добыча", lootTitle: "Самые лучшие отели с видом на море: цена за ночь",
+    lgBench: "Mangrove (ваш отель)", lgLine: "белая линия = цена менеджера ¥850",
+    bays: { haitang: "Хайтанвань", yalong: "Ялунвань", dadonghai: "Дадунхай", sanyabay: "бухта Санья" },
+    mapKicker: "Радар", mapTitle: "Где отели", mapNote: "Схема по реальным координатам, север вверху. У каждого отеля есть кнопка навигации Amap.",
+    dosKicker: "Досье отелей", dosTitle: "По одному: сначала отели за ¥600–1 000",
+    file: "Досье", yours: "ваш отель", per: "за ночь · номер с видом на море", rating: "Рейтинг", reviews: "отзывов",
+    base: "точка отсчёта", fromM: km => km + " км от Mangrove",
+    pricesNight: "Цены за ночь", noBf: "без завтрака", bf: "с завтраком на 2", anyRoom: "Самый дешёвый номер", seaRoom: "С видом на море",
+    roomPhoto: "Номер", nav: "Навигация Amap →", trip: "Смотреть на Trip.com",
+    mapFoot: "Санья: центр — бухта Санья и Дадунхай, восток — Ялунвань и Хайтанвань",
+    mapAria: "Схема расположения отелей в Санье",
+    foot1: "Источник: Trip.com, проверено 2026-11-04. Даты 7–10 ноября (3 ночи), 1 номер, 2 взрослых; цена за ночь = итог за 3 ночи с налогами ÷ 3. Цены меняются, смотрите страницу бронирования.",
+    foot2: "Координаты: карта Trip.com (GCJ-02), работают в Amap.", foot3: "Системный администратор: DONI · штаб в Ташкенте · соединение защищено ✓",
+    locale: "ru-RU"
+  },
+  en: {
+    who: "Bekzodaka and his friends", tag: "Sanya sea-view hotel intel",
+    kicker: "Top secret · Sanya · November 2026",
+    sub: "Doni's hacker HQ scanned 14 sea-view resorts in Haitang Bay, Yalong Bay, Dadonghai and Sanya Bay: prices with and without breakfast, room photos, a map and ratings. Have a great trip!",
+    term: ["[..] bypassing the front-desk firewall ...... done", "[OK] connected to the Sanya hotel database: 14 hotels · 42 photos · 56 prices", "[!!] price exploit found: Mangrove 180° sea view — Qunar ¥970 → sales manager ¥850 → Trip.com ¥765/night", "[OK] ACCESS GRANTED · welcome, Bekzodaka and friends"],
+    exKicker: "Exploit report #001", exTitle: "Mangrove 180° sea view: cheaper online", manager: "Sales manager", perNight: "/night",
+    exNote: "Save ¥85 a night, ¥255 for 3 nights. The Trip.com price includes taxes, room only, prepaid, 7–10 Nov (3 nights).",
+    lootKicker: "Loot", lootTitle: "The best sea-view hotels: price per night",
+    lgBench: "Mangrove (your hotel)", lgLine: "white line = sales manager's ¥850",
+    bays: { haitang: "Haitang Bay", yalong: "Yalong Bay", dadonghai: "Dadonghai", sanyabay: "Sanya Bay" },
+    mapKicker: "Radar", mapTitle: "Where the hotels are", mapNote: "Drawn to scale from real coordinates, north up. Every hotel has an Amap navigation button.",
+    dosKicker: "Hotel files", dosTitle: "One by one: ¥600–1,000 hotels first",
+    file: "File", yours: "your hotel", per: "per night · sea-view room", rating: "Rating", reviews: "reviews",
+    base: "starting point", fromM: km => km + " km from Mangrove",
+    pricesNight: "Prices per night", noBf: "no breakfast", bf: "breakfast for 2", anyRoom: "Cheapest room", seaRoom: "Sea-view room",
+    roomPhoto: "Room", nav: "Amap navigation →", trip: "View on Trip.com",
+    mapFoot: "Sanya: city side = Sanya Bay and Dadonghai, east = Yalong Bay and Haitang Bay",
+    mapAria: "Map of the hotels in Sanya",
+    foot1: "Source: Trip.com, checked 2026-11-04. Dates 7–10 Nov (3 nights), 1 room, 2 adults; per night = 3-night total with taxes ÷ 3. Prices change, check the booking page.",
+    foot2: "Coordinates: Trip.com map data (GCJ-02), they work in Amap.", foot3: "System admin: DONI · Tashkent HQ · connection secure ✓",
+    locale: "en-US"
+  },
+  zh: {
+    who: "Bekzodaka 和朋友们", tag: "三亚海景情报",
+    kicker: "绝密档案 · 三亚 · 2026 年 11 月",
+    sub: "Doni 黑客中心为你们扫描了海棠湾、亚龙湾、大东海和三亚湾的 14 家海景度假酒店：含早和不含早价格、房间照片、地图和评分。度假愉快！",
+    term: ["[..] 正在绕过前台防火墙 ...... 完成", "[OK] 已连接三亚海景酒店数据库：14 家酒店 · 42 张照片 · 56 个价格", "[!!] 发现价格漏洞：红树林 180° 海景房 去哪儿 ¥970 → 销售经理 ¥850 → Trip.com ¥765/晚", "[OK] ACCESS GRANTED · 欢迎 Bekzodaka 和朋友们"],
+    exKicker: "漏洞报告 #001", exTitle: "红树林 180° 海景房，网上更便宜", manager: "销售经理", perNight: "/晚",
+    exNote: "每晚再省 ¥85，三晚省 ¥255。Trip.com 价格含税、仅住宿、需预付，11 月 7–10 日（3 晚）。",
+    lootKicker: "战利品对比", lootTitle: "最好的海景酒店：每晚价格",
+    lgBench: "红树林（现在的酒店）", lgLine: "白线 = 销售经理报价 ¥850",
+    bays: { haitang: "海棠湾", yalong: "亚龙湾", dadonghai: "大东海", sanyabay: "三亚湾" },
+    mapKicker: "雷达定位", mapTitle: "酒店在哪里", mapNote: "示意图，按真实坐标比例绘制（北在上）。每家酒店下面都有“高德导航”按钮。",
+    dosKicker: "酒店档案", dosTitle: "一家一家看：先看 ¥600–1,000 的酒店",
+    file: "档案", yours: "现在的酒店", per: "每晚 · 海景房", rating: "评分", reviews: "条点评",
+    base: "基准点", fromM: km => "离红树林 " + km + " 公里",
+    pricesNight: "每晚价格", noBf: "不含早", bf: "含双早", anyRoom: "最便宜的房型", seaRoom: "海景房",
+    roomPhoto: "房间", nav: "高德导航 →", trip: "Trip.com 查看",
+    mapFoot: "三亚：市区一侧为三亚湾和大东海，东边为亚龙湾和海棠湾",
+    mapAria: "三亚酒店位置示意图",
+    foot1: "数据来源：Trip.com，2026-11-04 读取。日期 11 月 7–10 日（3 晚），1 间房 2 位成人，每晚价 = 3 晚含税总价 ÷ 3。价格随时变化，以预订页面为准。",
+    foot2: "坐标：Trip.com 地图数据（GCJ-02），可直接用于高德地图。", foot3: "系统管理员：DONI · 塔什干总部 · 连接安全 ✓",
+    locale: "zh-CN"
+  }
+};
+
+/* p: [cheapest no breakfast, cheapest with breakfast for 2, sea view no breakfast, sea view with breakfast for 2] (¥/night) */
+const H = [
+  {id:1, bench:true, bay:"haitang", lat:18.339794, lng:109.736858, rating:9.1, reviews:17528, km:0, p:[646,749,686,789],
+   name:{zh:"三亚海棠湾红树林度假酒店", en:"The Mangrove Sanya (Haitang Bay)"}, short:{zh:"海棠湾红树林", en:"Mangrove Haitang"},
+   room:{ru:"Делюкс с видом на море, 2 кровати", en:"Deluxe Sea View Twin", zh:"豪华海景双床房"},
+   hi:{ru:["6 открытых бассейнов (3 только для взрослых), детский бассейн, аквапарк с горками, детский клуб","Около 0,9 км до общественного пляжа Хайтанвань","3 ресторана: кантонская, тайская и европейская кухня","Бесплатные спортзал и сауна, сёрфинг, верховая езда; гости хвалят батлер-сервис"],
+       en:["6 outdoor pools (3 adults-only), kids' pool, water park with slides, kids' club","About 0.9 km to the Haitang Bay public beach","3 restaurants: Cantonese, Thai, Western","Free gym and sauna, surfing, horse riding; guests praise the butler service"],
+       zh:["6 个室外泳池（3 个成人专属）、儿童池、水上乐园和滑梯、儿童俱乐部","距海棠湾公共海滩约 0.9 公里","3 家餐厅：粤菜、泰餐、西餐","免费健身房和桑拿，可以冲浪、骑马；管家服务好评很多"]},
+   quip:{ru:"> Старый друг. Trip.com дешевле менеджера на ¥85. Система советует: бронировать онлайн.", en:"> Old friend. Trip.com beats the sales manager by ¥85. System says: book online.", zh:"> 老朋友。Trip.com 比销售经理还便宜 ¥85，系统建议：在线订。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=6331979&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"},
+  {id:2, bay:"yalong", lat:18.229144, lng:109.638615, rating:9.3, reviews:13048, km:16.1, p:[991,1224,1071,1224],
+   name:{zh:"三亚亚龙湾红树林度假酒店", en:"Yalong Bay Mangrove Tree Resort"}, short:{zh:"亚龙湾红树林", en:"Mangrove Tree Yalong"},
+   room:{ru:"Вид на море и кокосовую рощу, 2 кровати, балкон", en:"Coconut Grove Sea View Twin, open balcony", zh:"椰林海景双床房（开放式阳台）"},
+   hi:{ru:["Та же сеть Mangrove Tree, что и ваш отель","Номера с видом на море — с открытыми балконами над кокосовой рощей","Живая музыка; №13 в рейтинге «гастрономических отелей Саньи» Ctrip","Есть детские тематические номера"],
+       en:["Same Mangrove Tree brand as your hotel","Sea-view rooms have open balconies over a coconut grove","Live bands; No. 13 'Gourmet Hotels in Sanya' on Ctrip","Kids' theme rooms available"],
+       zh:["和现在的酒店同一个红树林品牌","海景房带开放式阳台，俯瞰椰林","有现场乐队；携程“三亚美食酒店”第 13 名","有儿童主题房"]},
+   quip:{ru:"> Та же семья, другая бухта.", en:"> Same family, different bay.", zh:"> 同门师兄：换个海湾，继续红树林。"}},
+  {id:3, bay:"yalong", lat:18.227708, lng:109.632992, rating:9.5, reviews:24927, km:16.6, p:[1192,1392,1556,1721],
+   name:{zh:"三亚亚龙湾喜来登度假酒店", en:"Sheraton Sanya Yalong Bay Resort"}, short:{zh:"亚龙湾喜来登", en:"Sheraton Yalong"},
+   room:{ru:"Делюкс с видом на море, 2 кровати", en:"Deluxe Sea View Twin", zh:"豪华海景双床房"},
+   hi:{ru:["5 открытых бассейнов, пляжный волейбол, гольф","Семейные тематические номера с видом на море","Ресторан с видом, теннис, кокосовая роща и море","№7 в рейтинге «премиальных отелей Саньи» Ctrip"],
+       en:["5 outdoor pools, beach volleyball, golf course","Sea-view family theme rooms","Scenic restaurant, tennis, coconut grove and sea views","No. 7 'Premium Hotels in Sanya' on Ctrip"],
+       zh:["5 个室外泳池、沙滩排球、高尔夫球场","有海景家庭主题房","景观餐厅、网球、椰林海景","携程“三亚高端酒店”第 7 名"]},
+   quip:{ru:"> Классика Ялунвань. Бассейнов больше, чем успеешь посчитать.", en:"> Yalong Bay classic. Too many pools to count.", zh:"> 亚龙湾老牌，泳池多到数不过来。"}},
+  {id:4, bay:"yalong", lat:18.226098, lng:109.6288, rating:9.4, reviews:28830, km:17.0, p:[1358,1568,1567,1777],
+   name:{zh:"三亚亚龙湾希尔顿酒店", en:"Hilton Sanya Yalong Bay Resort & Spa"}, short:{zh:"亚龙湾希尔顿", en:"Hilton Yalong"},
+   room:{ru:"Улучшенный номер с видом на море", en:"Superior Sea View Room", zh:"高级海景房"},
+   hi:{ru:["2 открытых бассейна (один с подогревом), лежаки","Пляжный волейбол, дайвинг, снорклинг, спа","Детский клуб","Гости хвалят вид и завтраки; №6 в рейтинге «премиальных отелей Саньи» Ctrip"],
+       en:["2 outdoor pools (one heated), sun deck","Beach volleyball, diving, snorkelling, spa","Kids' club","Guests love the sea views and breakfast; No. 6 'Premium Hotels in Sanya' on Ctrip"],
+       zh:["2 个室外泳池（有恒温池）、日光浴区","沙滩排球、潜水、浮潜、水疗","儿童俱乐部","海景和早餐好评；携程“三亚高端酒店”第 6 名"]},
+   quip:{ru:"> Разведка завтраков: отзывы восторженные.", en:"> Breakfast intel: reviews are glowing.", zh:"> 早餐情报：好评如潮。"}},
+  {id:5, bay:"yalong", lat:18.226238, lng:109.631033, rating:9.4, reviews:17216, km:16.8, p:[1515,1703,1931,2123],
+   name:{zh:"三亚亚龙湾万豪度假酒店", en:"Sanya Marriott Yalong Bay Resort & Spa"}, short:{zh:"亚龙湾万豪", en:"Marriott Yalong"},
+   room:{ru:"Номер с видом на океан, 1 кровать", en:"Ocean View Double", zh:"海景大床房"},
+   hi:{ru:["2 открытых бассейна, лежаки, гольф","Пляжный волейбол, дайвинг, спа и массаж","Детский клуб","Самый дорогой отель в списке"],
+       en:["2 outdoor pools, sun deck, golf course","Beach volleyball, diving, spa and massage","Kids' club","The priciest hotel on this list"],
+       zh:["2 个室外泳池、日光浴区、高尔夫球场","沙滩排球、潜水、水疗按摩","儿童俱乐部","这份名单里最贵的一家"]},
+   quip:{ru:"> Тревога кошелька: самый дорогой в списке.", en:"> Wallet alert: priciest on the list.", zh:"> 钱包警报：全场最贵。"}},
+  {id:6, bay:"haitang", lat:18.346247, lng:109.74072, rating:9.3, reviews:19375, km:0.8, p:[738,812,838,812],
+   name:{zh:"三亚海棠湾喜来登度假酒店", en:"Sheraton Sanya Haitang Bay Resort"}, short:{zh:"海棠湾喜来登", en:"Sheraton Haitang"},
+   room:{ru:"Номер с видом на море, 2 кровати", en:"Sea View Twin", zh:"海景双床房"},
+   hi:{ru:["4 открытых бассейна, пляжный бар, пляжный волейбол","Детский клуб, спа","На той же дороге, что и Mangrove, около 0,8 км к северу","Вид на море с завтраком на двоих дешевле, чем без завтрака: это другой тип номера"],
+       en:["4 outdoor pools, beach bar, beach volleyball","Kids' club, spa","Same road as Mangrove, about 0.8 km north","The sea view with breakfast for 2 is cheaper than without: it's a different room type"],
+       zh:["4 个室外泳池、沙滩酒吧、沙滩排球","儿童俱乐部、水疗","和红树林在同一条路上，往北约 0.8 公里","含双早的海景房比不含早还便宜：是另一种房型"]},
+   quip:{ru:"> Можно дойти пешком. Переезд проще некуда.", en:"> Walking distance. Easiest move.", zh:"> 走路就到，搬家最省事。"}},
+  {id:7, bay:"haitang", lat:18.400506, lng:109.784727, rating:9.2, reviews:8388, km:8.4, p:[504,481,570,573],
+   name:{zh:"三亚海棠湾万丽度假酒店", en:"Renaissance Sanya Haitang Bay Resort"}, short:{zh:"海棠湾万丽", en:"Renaissance Haitang"},
+   room:{ru:"Делюкс с видом на море, 1 кровать", en:"Deluxe Sea View Double", zh:"豪华海景大床房"},
+   hi:{ru:["Самый дешёвый вид на море в списке","Аквапарк, детский клуб, открытый бассейн, пляжный волейбол","Тропическая атмосфера, кокосовая роща и море","В самом северном конце Хайтанвань, около 8 км от Mangrove"],
+       en:["The cheapest sea view on this list","Water park, kids' club, outdoor pool, beach volleyball","Tropical vibe, coconut grove and sea views","At the far north end of Haitang Bay, about 8 km from Mangrove"],
+       zh:["这份名单里最便宜的海景房","水上乐园、儿童俱乐部、室外泳池、沙滩排球","热带风情、椰林海景","在海棠湾最北端，离红树林约 8 公里"]},
+   quip:{ru:"> Секретный уровень: дёшево, но далековато.", en:"> Hidden level: cheap, just a bit far.", zh:"> 隐藏关卡：便宜，就是有点远。"}},
+  {id:8, bay:"haitang", lat:18.368326, lng:109.750647, rating:9.7, reviews:31547, km:3.5, p:[1328,1349,1391,1392],
+   name:{zh:"三亚海棠湾民生威斯汀度假酒店", en:"The Westin Sanya Haitang Bay Resort"}, short:{zh:"海棠湾威斯汀", en:"Westin Haitang"},
+   room:{ru:"Гранд с видом на море, 2 кровати", en:"Grand Sea View Twin", zh:"豪华海景双床房"},
+   hi:{ru:["Самый высокий рейтинг в списке: 9.7","4 открытых бассейна, пляжный бар, сапборды, детский клуб","Около 0,4 км до пляжа и 0,75 км до дьюти-фри","№1 в рейтинге «самых фотогеничных отелей Саньи» Ctrip"],
+       en:["Highest rating on this list: 9.7","4 outdoor pools, beach bar, paddleboarding, kids' club","About 0.4 km to the beach, 0.75 km to the duty-free mall","No. 1 'Instagrammable Hotels in Sanya' on Ctrip"],
+       zh:["这份名单里评分最高：9.7","4 个室外泳池、沙滩酒吧、桨板、儿童俱乐部","离海滩约 0.4 公里，离免税城约 0.75 公里","携程“三亚网红打卡酒店”第 1 名"]},
+   quip:{ru:"> Рекорд игры. Рай для фото.", en:"> Top score in the game. Photo heaven.", zh:"> 全场最高分，拍照圣地。"}},
+  {id:9, bay:"yalong", lat:18.232289, lng:109.658488, rating:9.1, reviews:7159, km:14.5, p:[635,642,989,1064],
+   name:{zh:"三亚亚龙湾海景国际度假酒店", en:"Ocean View Resort Yalong Bay"}, short:{zh:"亚龙湾海景国际", en:"Ocean View Yalong"},
+   room:{ru:"Номер с видом на море, 2 кровати, балкон", en:"Sea View Twin with balcony", zh:"海景双床房（带阳台）"},
+   hi:{ru:["Открытый бассейн с видом на море, лежаки","Пляжный волейбол и дайвинг; 2 ресторана","Коралловый заповедник 170 м, подводный мир 250 м, общественный пляж 650 м","Номер с видом на море: 2 кровати и балкон"],
+       en:["Outdoor pool with sea views, sun deck","Beach volleyball and diving; 2 restaurants","Coral reef reserve 170 m, underwater world 250 m, public beach 650 m","The sea-view room has 2 beds and a balcony"],
+       zh:["海景室外泳池、日光浴区","沙滩排球、潜水；2 家餐厅","距珊瑚礁保护区 170 米，海底世界 250 米，公共海滩 650 米","海景房带 2 张床和阳台"]},
+   quip:{ru:"> Дешёвый билет в Ялунвань.", en:"> Budget ticket to Yalong Bay.", zh:"> 亚龙湾性价比之选。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=429615&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"},
+  {id:10, bay:"dadonghai", lat:18.218977, lng:109.51371, rating:9.5, reviews:12798, km:27.1, p:[714,782,810,888],
+   name:{zh:"三亚君吉海景酒店", en:"Sanya Junji Seaview Hotel"}, short:{zh:"君吉海景", en:"Junji Seaview"},
+   room:{ru:"Делюкс с боковым видом на море, 1 кровать", en:"Deluxe Side Sea View King", zh:"豪华侧海景大床房"},
+   hi:{ru:["Пляж Дадунхай примерно в 100 м","2 открытых бассейна (кольцевой), спа, лаундж, бесплатный спортзал","Гости хвалят сервис; кокосовая роща и море","Цена за номер с боковым видом на море; номера с видом 180° — от ¥966 за ночь"],
+       en:["Dadonghai Beach about 100 m away","2 outdoor pools (ring pool), spa, executive lounge, free gym","Guests praise the service; coconut grove and sea views","Priced room has a side sea view; 180° sea-view rooms from ¥966 a night"],
+       zh:["距大东海海滩约 100 米","2 个室外泳池（环形泳池）、水疗、行政酒廊、免费健身房","服务好评；椰林海景","价格为侧海景房；180° 海景房每晚 ¥966 起"]},
+   quip:{ru:"> Рейтинг 9.5, пляж за углом.", en:"> 9.5 rating, beach around the corner.", zh:"> 9.5 高分，海滩就在拐角。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=114967083&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"},
+  {id:11, bay:"dadonghai", lat:18.221539, lng:109.5206, rating:9.5, reviews:6831, km:26.3, p:[818,938,921,1045],
+   name:{zh:"三亚银泰阳光度假酒店", en:"Sunshine Resort Intime Sanya"}, short:{zh:"银泰阳光", en:"Intime Sunshine"},
+   room:{ru:"Улучшенный с видом на море, 1 кровать", en:"Superior Sea View King", zh:"高级海景大床房"},
+   hi:{ru:["Пляж Дадунхай примерно в 50 м","Бассейн в саду, лежаки, бесплатный спортзал; 3 ресторана","ТЦ Summer Mall 450 м, площадь Дадунхай 330 м","Гости хвалят сервис и расположение"],
+       en:["Dadonghai Beach about 50 m away","Garden pool, sun deck, free gym; 3 restaurants","Summer Mall 450 m, Dadonghai Square 330 m","Guests praise the service and the location"],
+       zh:["距大东海海滩约 50 米","花园泳池、日光浴区、免费健身房；3 家餐厅","距夏日百货 450 米，大东海广场 330 米","服务和位置好评"]},
+   quip:{ru:"> Вышел из лобби — уже на пляже.", en:"> Out of the lobby, onto the beach.", zh:"> 出了大堂就是海滩。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=346690&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"},
+  {id:12, bay:"dadonghai", lat:18.215787, lng:109.513655, rating:9.4, reviews:13042, km:27.3, p:[838,997,1027,1166],
+   name:{zh:"三亚绿发山海天JW万豪酒店", en:"JW Marriott Hotel Sanya Dadonghai Bay"}, short:{zh:"大东海JW万豪", en:"JW Marriott Dadonghai"},
+   room:{ru:"Премьер-делюкс с видом на океан, 2 кровати", en:"Premier Deluxe Ocean Twin", zh:"高级豪华海景双床房"},
+   hi:{ru:["Открытый бассейн с видом, спа, лаундж, спортзал с видом на море","Детские тематические номера и игровая зона","Пляж Дадунхай 1 км, ТЦ Summer Mall 1,6 км","Вид на море чуть дороже ¥1 000 за ночь"],
+       en:["Scenic outdoor pool, spa, executive lounge, sea-view gym","Kids' theme rooms and a kids' play area","Dadonghai Beach 1 km, Summer Mall 1.6 km","Sea view just over ¥1,000 a night"],
+       zh:["景观室外泳池、水疗、行政酒廊、海景健身房","儿童主题房和儿童游乐区","距大东海海滩 1 公里，夏日百货 1.6 公里","海景房每晚略超 ¥1,000"]},
+   quip:{ru:"> Люкс-бренд почти по цене Mangrove.", en:"> Luxury brand, almost Mangrove money.", zh:"> 豪华品牌，价格接近红树林。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=1457262&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"},
+  {id:13, bay:"dadonghai", lat:18.22189, lng:109.524153, rating:9.6, reviews:7519, km:26.0, p:[1108,1228,1108,1228],
+   name:{zh:"三亚珠江花园酒店", en:"Pearl River Garden Hotel Sanya"}, short:{zh:"珠江花园", en:"Pearl River Garden"},
+   room:{ru:"Делюкс с видом на океан", en:"Deluxe Ocean View Room", zh:"豪华海景房"},
+   hi:{ru:["Пляж и площадь Дадунхай примерно в 50 м","2 открытых бассейна, включая бассейн на крыше; волейбол, дайвинг, снорклинг, сёрфинг","Во всех номерах вид на море","Чуть дороже ¥1 000 за ночь"],
+       en:["Dadonghai Beach and Square about 50 m away","2 outdoor pools incl. a rooftop pool; volleyball, diving, snorkelling, surfing","Every room has a sea view","A bit over ¥1,000 a night"],
+       zh:["距大东海海滩和广场约 50 米","2 个室外泳池（含屋顶泳池）；排球、潜水、浮潜、冲浪","所有房间都是海景房","每晚略超 ¥1,000"]},
+   quip:{ru:"> Здесь каждый номер — с морем.", en:"> Every room comes with the sea.", zh:"> 间间都看海。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=372133&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"},
+  {id:14, bay:"sanyabay", lat:18.287643, lng:109.438114, rating:9.6, reviews:1779, km:32.1, p:[721,852,721,852],
+   name:{zh:"三亚湾voco酒店", en:"voco Sanya Bay by IHG"}, short:{zh:"三亚湾voco", en:"voco Sanya Bay"},
+   room:{ru:"Стандарт с видом на океан, 1 кровать, балкон", en:"Standard Ocean View King with balcony", zh:"海景大床房（带阳台）"},
+   hi:{ru:["Открылся в 2026; бассейн-инфинити на крыше","Пляж бухты Санья и аллея «Кокосовая мечта» примерно в 50 м","Ближе всех к аэропорту Феникс (6,4 км)","Новый отель: пока только 1 779 отзывов"],
+       en:["Opened in 2026; rooftop infinity pool","Sanya Bay beach and the Coconut Dream Corridor about 50 m away","Closest to Phoenix Airport (6.4 km)","New hotel: only 1,779 reviews so far"],
+       zh:["2026 年新开业；屋顶无边泳池","距三亚湾海滩和椰梦长廊约 50 米","离凤凰机场最近（6.4 公里）","新酒店：目前只有 1,779 条点评"]},
+   quip:{ru:"> Новенький, с бассейном на крыше.", en:"> Brand new, pool on the roof.", zh:"> 全新开业，屋顶泳池。"},
+   link:"https://www.trip.com/hotels/detail/?hotelId=133289743&checkIn=2026-11-07&checkOut=2026-11-10&adult=2&crn=1&curr=CNY"}
+];
+
+/* order: your hotel first, then ¥600–1,000 by price, then the pricier ones, then the cheaper one */
+const sea = h => h.p[2];
+const grp = h => h.bench ? 0 : (sea(h) >= 600 && sea(h) <= 1000 ? 1 : (sea(h) > 1000 ? 2 : 3));
+H.sort((a, b) => grp(a) - grp(b) || sea(a) - sea(b));
+H.forEach((h, i) => h.n = i + 1);
+
+const bayColor = { haitang: "var(--sea)", yalong: "var(--sand)", dadonghai: "var(--dh)", sanyabay: "var(--sb)" };
+const amap = h => "https://uri.amap.com/marker?position=" + h.lng + "," + h.lat + "&name=" + encodeURIComponent(h.name.zh) + "&coordinate=gaode&callnative=1";
+const mainName = (h, L) => L === "zh" ? h.name.zh : h.name.en;
+const altName = (h, L) => L === "zh" ? h.name.en : h.name.zh;
+const shortName = (h, L) => L === "zh" ? h.short.zh : h.short.en;
+
+function render(L) {
+  const t = T[L], fmt = n => "¥" + n.toLocaleString(t.locale);
+  document.documentElement.lang = L === "zh" ? "zh-CN" : L;
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t[el.dataset.t]; });
+  document.querySelectorAll(".langbar button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === L)));
+
+  document.getElementById("term").innerHTML =
+    `<p><span class="prompt">root@doni-hq:~$</span> ./sanya_hotel_scan --bays=haitang,yalong,dadonghai,sanya --dates=11.07-11.10 --view=ocean --breakfast=both</p>` +
+    `<p class="dim">${t.term[0]}</p><p class="ok">${t.term[1]}</p><p class="warn">${t.term[2]}</p>` +
+    `<p class="ok">${t.term[3]} <span class="cursor" aria-hidden="true"></span></p>`;
+
+  const max = 2000;
+  document.getElementById("bars").innerHTML = [...H].sort((a, b) => sea(a) - sea(b)).map(h => {
+    const c = h.bench ? "var(--sun)" : bayColor[h.bay];
+    return `<div class="bar"><span class="nm" title="${mainName(h, L)}">${shortName(h, L)}</span>
+      <span class="track"><span class="fill" style="width:${(sea(h) / max * 100).toFixed(1)}%;background:${c}"></span><span class="mark" style="left:${(850 / max * 100).toFixed(1)}%"></span></span>
+      <span class="v">${fmt(sea(h))}</span></div>`;
+  }).join("");
+  document.getElementById("legend").innerHTML =
+    `<span><i style="background:var(--sun)"></i>${t.lgBench}</span>` +
+    Object.keys(bayColor).map(k => `<span><i style="background:${bayColor[k]}"></i>${t.bays[k]}</span>`).join("") +
+    `<span><i style="background:var(--fg);opacity:.5"></i>${t.lgLine}</span>`;
+
+  /* radar map from real coordinates */
+  const svg = document.getElementById("map");
+  svg.setAttribute("aria-label", t.mapAria);
+  const L0 = 109.41, L1 = 109.80, A0 = 18.20, A1 = 18.42;
+  const X = lng => 20 + (lng - L0) / (L1 - L0) * 600, Y = lat => 20 + (A1 - lat) / (A1 - A0) * 340;
+  const mono = 'font-family="JetBrains Mono, monospace"', disp = 'font-family="Russo One, ZCOOL QingKe HuangYou, sans-serif"';
+  let s = "";
+  for (let i = 0; i <= 12; i++) { const x = 20 + i * 50; s += `<line x1="${x}" y1="20" x2="${x}" y2="360" stroke="var(--line)"/>`; }
+  for (let i = 0; i <= 7; i++) { const y = 20 + i * 48.6; s += `<line x1="20" y1="${y}" x2="620" y2="${y}" stroke="var(--line)"/>`; }
+  [60, 120, 180].forEach(r => s += `<circle cx="520" cy="120" r="${r}" fill="none" stroke="var(--line)" stroke-dasharray="3 5"/>`);
+  s += `<g class="sweep"><path d="M520 120 L700 120 A180 180 0 0 0 647 -7 Z" fill="var(--sea)" opacity=".07"/></g>`;
+  const pin = (h, label, anchor, dx) => {
+    const x = X(h.lng), y = Y(h.lat), c = h.bench ? "var(--sun)" : bayColor[h.bay];
+    return `<circle cx="${x}" cy="${y}" r="9" fill="none" stroke="${c}" opacity=".5"/><circle cx="${x}" cy="${y}" r="4.5" fill="${c}"/>` +
+      `<text x="${x + dx}" y="${y + 4}" fill="${c}" ${mono} font-size="12" text-anchor="${anchor}">${label}</text>`;
+  };
+  H.filter(h => h.bay === "haitang").sort((a, b) => b.lat - a.lat).forEach(h => {
+    s += pin(h, `#${h.n} ${shortName(h, L)}`, "end", -14);
+  });
+  H.filter(h => h.bay === "sanyabay").forEach(h => { s += pin(h, `#${h.n} ${shortName(h, L)}`, "start", 14); });
+  const cluster = (bay, lat, lng, dy, anchor) => {
+    const list = H.filter(h => h.bay === bay).sort((a, b) => a.n - b.n);
+    const x = X(lng), y = Y(lat), c = bayColor[bay];
+    s += `<circle cx="${x}" cy="${y}" r="11" fill="none" stroke="${c}"/><circle cx="${x}" cy="${y}" r="5" fill="${c}"/>`;
+    s += `<text x="${x}" y="${y + dy}" fill="${c}" ${disp} font-size="17" text-anchor="${anchor}">${t.bays[bay]}</text>`;
+    s += `<text x="${x}" y="${y + dy + 18}" fill="var(--fg)" ${mono} font-size="12" text-anchor="${anchor}">${list.map(h => "#" + h.n).join(" ")}</text>`;
+  };
+  cluster("yalong", 18.2290, 109.6400, 30, "middle");
+  cluster("dadonghai", 18.2190, 109.5180, 30, "middle");
+  s += `<text x="${X(109.70)}" y="${Y(18.405)}" fill="var(--muted)" ${disp} font-size="18" text-anchor="end">${t.bays.haitang}</text>`;
+  s += `<text x="20" y="390" fill="var(--muted)" ${mono} font-size="11">${t.mapFoot}</text>`;
+  s += `<text x="612" y="36" fill="var(--muted)" ${mono} font-size="12" text-anchor="end">N ↑</text>`;
+  svg.innerHTML = s;
+
+  document.getElementById("dossiers").innerHTML = H.map(h => `
+    <article class="card${h.bench ? " bench" : ""}" id="hotel-${h.n}">
+      <div class="head">
+        <div>
+          <div class="id">${t.file} #${h.n} · ${t.bays[h.bay]}${h.bench ? " · " + t.yours : ""}</div>
+          <h3>${mainName(h, L)}</h3>
+          <div class="alt">${altName(h, L)}</div>
+        </div>
+        <div class="price"><div class="big">${fmt(sea(h))}</div><div class="per">${t.per}</div></div>
+      </div>
+      <div class="photos">
+        <img src="img/${h.id}-1.jpg" alt="${mainName(h, L)} 1" loading="lazy">
+        <img src="img/${h.id}-2.jpg" alt="${mainName(h, L)} 2" loading="lazy">
+        <figure><img src="img/${h.id}-room.jpg" alt="${h.room[L]}" loading="lazy"><figcaption>${t.roomPhoto}: ${h.room[L]}</figcaption></figure>
+      </div>
+      <div class="body">
+        <div class="stats">
+          <span class="chip${h.rating >= 9.5 ? " hot" : ""}">${t.rating} ${h.rating}/10</span>
+          <span class="chip">${h.reviews.toLocaleString(t.locale)} ${t.reviews}</span>
+          <span class="chip">${h.km === 0 ? t.base : t.fromM(h.km)}</span>
+        </div>
+        <div class="ptable-wrap"><table class="ptable">
+          <thead><tr><th>${t.pricesNight}</th><th>${t.noBf}</th><th>${t.bf}</th></tr></thead>
+          <tbody>
+            <tr><td>${t.anyRoom}</td><td>${fmt(h.p[0])}</td><td>${fmt(h.p[1])}</td></tr>
+            <tr class="sea"><td>${t.seaRoom}<span class="rn">${h.room[L]}</span></td><td>${fmt(h.p[2])}</td><td>${fmt(h.p[3])}</td></tr>
+          </tbody>
+        </table></div>
+        <ul>${h.hi[L].map(x => `<li>${x}</li>`).join("")}</ul>
+        <div class="quip">${h.quip[L]}</div>
+        <div class="links">
+          <a class="btn" href="${amap(h)}" target="_blank" rel="noopener">${t.nav}</a>
+          ${h.link ? `<a class="btn alt2" href="${h.link}" target="_blank" rel="noopener">${t.trip}</a>` : ""}
+        </div>
+      </div>
+    </article>`).join("");
+}
+
+let lang = "ru";
+try { const saved = localStorage.getItem("sanya-lang"); if (saved && T[saved]) lang = saved; } catch (e) {}
+document.querySelectorAll(".langbar button").forEach(b => b.addEventListener("click", () => {
+  lang = b.dataset.lang; render(lang);
+  try { localStorage.setItem("sanya-lang", lang); } catch (e) {}
+}));
+render(lang);
+</script>
+
+</body>
+</html>
